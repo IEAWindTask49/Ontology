@@ -29,10 +29,13 @@ page. The current ontology sections are as follows:
   * [Resource                        ](#resource)
   * [RAFT Cases                      ](#raft-cases)
   * [RAFT Settings                   ](#raft-settings)
+  * [Marine Growth                   ](#marine-growth)
 * [Array                             ](#array)
   * [Array Layout                    ](#array-layout)
   * [Array Mooring                   ](#array-mooring)
   * [Array Cables                    ](#array-cables)
+  * [Cable Routing                   ](#cable-routing)
+* [Substation                        ](#substation)
 * [Turbine(s)                        ](#turbines)
 * [Platform(s)                       ](#platforms)
 * [Mooring                           ](#mooring)
@@ -42,10 +45,11 @@ page. The current ontology sections are as follows:
   * [Mooring Connectors              ](#mooring-connectors)
   * [Anchor types                    ](#anchor-types)
 * [Cables                            ](#cables)
-  * [Cables with Routing             ](#cables-with-routing)
-  * [Dynamic Cable Configurations    ](#dynamic-cable-configurations)
-  * [Cable Cross Sectional Properties](#cable-cross-sectional-properties)
+  * [Top Level Cables                ](#top-level-cables)
+  * [Cable Configurations            ](#cable-configurations)
+  * [Cable Cross Sectional Properties](#cable-types)
   * [Cable Appendages                ](#cable-appendages)
+  * [Cable Joints                    ](#cable-joints)
 
 The following sections give an overview of the array ontology makeup with examples. 
 
@@ -103,7 +107,7 @@ connected linearly to define the exclusion zone. The user can define as many exc
 The bathymetry section currently just provides a link to a MoorDyn-style
 bathymetry grid file. There is potential redundancy with the seabed section
 and we likely want to support other file formats as well. To be improved.
-	
+  
 ```yaml
     bathymetry:
         file:   # MoorDyn-style bathymetry file
@@ -111,22 +115,44 @@ and we likely want to support other file formats as well. To be improved.
 
 
 ### Seabed
-The seabed section contains information on the depth and soil type throughout the array. 
-The user provides a list of x, y, z and "soil type" points to define the depth
-and soil type classification. Alternatively, a file can be specified containing fully
-gridded data about depth and soil properties on a rectangular grid, with the option
-for quantitative soil index properties.
-In between provided points, the depth is linearly interpolated. 
-For now, the soil type will be assumed to match that of the nearest point. 
-	
+The seabed section contains information on the soil type throughout the array.
+A sample for how to call different files is shown commented out in the script below.
+A file with extensions .txt, .csv, and .shp that contains soil data may be specified.
+Alternatively, a type array may be used that lists the soils at different x-y locations. 
+Soil properties are listed in the soil_types section, which is necessary for anchor modeling.
+Each soil property is a list, although the list may be a length of 1 (homogeneous soil). Each entry 
+in the list is the soil property value at the corresponding depth. 
+
+Currently, only homogeneous soils are supported by the anchor capacity models, but the list structure is in place for future model enhancements.
+  
 ```yaml
-    seabed:
-        keys: [x,  y, depth,  soil_type]
-        data:
-          - [ x1, y1, z1, "soft clay"]
-          - [ x2, y2, z1, "medium clay"]    
-          
-        filename: 'seabed_grid.csv'  # gridded data of seabed depth and soil classification   
+        ### File-based approach ###
+        #file: '../soil_sample.txt'
+        #file: 'seabed_grid.csv'  # gridded data of seabed depth and soil classification
+        #file: '../geography/Soil_Type.shp'  # gridded data of seabed depth and soil classification
+
+        ### Manual approach ###
+        x : [-1901,    0,    1900]   # x locations for type_array below
+        y : [-1900,     2,  1900 ]   # y locations for type_array below
+        
+        type_array:
+          - [mud_soft ,  mud_firm ,   mud_soft]  
+          - [mud_soft ,  rock     ,   mud_soft]  
+          - [mud_soft ,  mud_firm ,   mud_soft]  
+
+        soil_types:   # dictionary-based approach
+          mud_soft:
+            Su0 : [2.39]  # [kPa]
+            k : [1.41]    # [kPa/m]
+            depth: [0]    # [m]
+          mud_firm:
+            Su0 : [23.94] # [kPa]
+            k : [2.67]    # [kPa/m]
+            depth: [0]     # [m]
+          rock:
+            UCS : [7]     # [MPa]
+            Em  : [50]    # [MPa]
+            depth: [0]    # [m]			
 ```
 
 ### Metocean
@@ -140,14 +166,31 @@ csv filename.
 ```yaml
     metocean:
         extremes:  # extreme values for specified return periods (in years)
-            keys :   [ Hs  , Tp  , WindSpeed, TI, Shear, Gamma, CurrentSpeed ]
-            data :
-                1:   [     ,     ,     ]
-                10:  [     ,     ,     ]
-                50:  [     ,     ,     ]
-                500: [     ,     ,     ]
+            return periods :   [ 1, 5, 50 ]  # in years
+            all :   # unconditional extreme values
+                Hs:    [     ,     ,     ]
+                Tp:    [     ,     ,     ]
+                Gamma: [     ,     ,     ]
+                WS:    [     ,     ,     ]
+                TI:    [     ,     ,     ]
+                Shear: [     ,     ,     ]
+                CS:    [     ,     ,     ]
+                8.5	9.8, 10.4, 11.8, 12.4, 13.7, 16.8, 18.1, 18.6, 19.8, 20.3, 21.4
+
                 
-        probabalistic_bins:
+            WS_2_4 :  # conditional values from wind speed range of 2 - 4 m/s
+                Hs:    [     ,     ,     ]
+                Tp:    [     ,     ,     ]
+                Gamma: [     ,     ,     ]
+                TI:    [     ,     ,     ]
+                Shear: [     ,     ,     ]
+                CS:    [     ,     ,     ]
+            
+            WS_4_6 :  # conditional values from wind speed range of 4 - 6 m/s
+                ...
+            
+            
+        joint_probability_bins:  # a set of cases representing the joint metocean probability distribution
             keys : [ prob , Hs  , Tp, WindSpeed, TI, Shear, Gamma, CurrentSpeed, WindDir, WaveDir, CurrentDir  ]
             data :
                 -  [ 0.010  ,   ,   ]
@@ -184,6 +227,7 @@ RAFT_cases:
 The RAFT settings section contains the general parameters used for RAFT simulations, such as cutoff frequencies, 
 Initial amplitudes for each degree of freedom at all frequencies, and the number of iterations to solve the model dynamics. 
 As with the previous section, the format follows that specified by [RAFT](https://openraft.readthedocs.io).
+
 ```yaml
 RAFT_settings:   
         min_freq     :  0.001    #  [Hz]       lowest frequency to consider, also the frequency bin width     
@@ -192,41 +236,81 @@ RAFT_settings:
         nIter        :   4      # sets how many iterations to perform in Model.solveDynamics()
 ``` 
 
+### Marine Growth
+The marine growth section contains information on marine growth thicknesses and densities for mooring lines and cables at various depth ranges.
+Each entry in the data table contains the thickness, lower and upper end of the depth range, and optionally the density.
+If no density is listed, it is defaulted to `1325 kg/m^3`.
+
+The buoys section lists the marine growth thickness on the portions of the dynamic cable that are buoyant. Due to the complexities of modeling marine growth on buoys, FAModel requires the entire buoyant section to have the same marine growth thickness, so they are explicitly specified by section rather than using the marine growth data table. If only one thickness is provided in the buoys section, that thickness is used for all buoyancy sections. If multiple thicknesses are listed, the the index of the thickness corresponds to the index of the buoyancy section in the design dictionary of the DynamicCable. Bare sections of cable will use the thicknesses of the marine growth data table.
+```yaml
+marine_growth:
+        keys: [thickness, lowerRange, upperRange, density]
+        data:   #  (m)       (m)          (m)     (kg/m^3)
+          - [  0.00,        -200,       -100,      1325]
+          - [  0.05,        -100,       -80,       1325]
+          - [  0.10,        -80,        -40,       1325]
+          - [  0.20,        -40,          0,       1325]
+        buoys: [0.1]
+```
+
 ## Array
 
-This part of the ontology includes a section for the tubine layout, as
+This part of the ontology includes a section for the turbine layout, as
 well as optional array-level descriptions of the mooring system and 
-array cabling.
+array cabling. 
 
 ### Array Layout
-The array section summarizes the floating wind turbines in the array. The 
-section inputs a list where each entry corresponds to a wind turbine. The ID serves as a method to identify the specific turbine system. 
-As such, each list entry should have a unique ID number. The turbineID and platformID are specified for each list entry,
+There are two options for describing the array layout: uniform or freeform array.
+
+For a simple uniform array, use the 'uniform_array' section. This section provides information on parameters of a uniform array such as number of rows and columns, spacing, etc, along with the id of a mooring system, platform, and turbine that will be used for all platforms. These ids connect to details on specific mooring systems, platforms, and turbines in [Mooring Systems](#mooring-systems), [Platform](#platforms), and [Turbine](#turbines) sections respectively. Due to the nature of this method, no shared moorings/anchors can be used. Platform IDs for uniform arrays will be assigned automatically in the Project class.
+```yaml
+# Wind turbine array layout
+uniform_array:
+  n_rows: 5 # number of rows in the array
+  n_cols: 5 # number of cols in the array
+  west_start: -1500 # western-most edge of the array
+  north_start: 1500 # north-most edge of the array
+  spacing_x: 1700 # spacing in x (East-West) direction
+  spacing_y: 1900 # spacing in y (North-South) direction
+  turbineID: 1 # turbine ID
+  platformID: 1 # platform ID
+  mooringID: ms1 # mooring system ID
+  heading_adjust: 0 # heading adjustment for the platforms
+```
+
+Alternatively, to specify the location of each platform individually, you must use the array table section.
+The section inputs a list where each entry corresponds to a wind turbine. The ID serves as a method to identify the specific turbine system. 
+
+As such, each list entry should have a unique ID, but the ID type (string, int, etc) is up to the user. The turbineID and platformID are specified for each list entry,
 connecting to details in the [Turbine](#turbines) and [Platform](#platforms) sections. This allows the user to easily 
 specify different turbine or platform types throughout the array. 
-Similarly, the mooringID is included and refers to the [mooring_systems](#mooring-systems) section.
+Similarly, the mooringID is included and refers to the [Mooring Systems](#mooring-systems) section.
 This allows the user to set up general mooring systems to be used throughout the array. Additionally, the x and y locations are input and the heading adjustment.
-The heading adjustment refers to a rotation of the mooring system, relative to how it is defined in the mooring_systems section. This allows the user to 
+The heading adjustment (clockwise with 0 due North) refers to a rotation of the platform. The headings of any mooring lines and cables associated with that platform are then provided in their respective sections relative to the platform heading. This allows the user to 
 easily define a single mooring system for various rotations throughout the array.
 
-Alternatively, the mooringID can be set to zero and the mooring system can be 
-input in the [array_mooring](#array-mooring) section.
+Alternatively, the mooringID can be set to zero and the each mooring line can individually be described  in the [Array Mooring](#array-mooring) section.
 
 ```yaml
 array:
     keys : [ID, turbineID, platformID, mooringID,   x_location,     y_location,   heading_adjust]
     data : # ID#   ID#        ID#        ID#           [m]             [m]           [deg]
-        -  [1,     1,         1,         ms1,         0,             0,           180  ]    
-        -  [2,     1,         2,         ms2,         1600,          0,            0   ]  
+        -  [fowt1,  1,         1,         ms1,         0,             0,           180  ]    
+        -  [f2,     1,         2,         ms2,         1600,          0,            0   ]  
 ```
 
 
 ### Array Mooring
-The array mooring section allows the user to input array-level mooring system details, instead of the more generalized mooring systems in mooring_systems.
+The array mooring section allows the user to input array-level mooring system details, instead of the more generalized mooring systems in [Mooring Systems](#mooring_systems). It is often used for shared moorings or mooring lines connected to shared anchors, as those lines cannot be described by the [Mooring Systems](#mooring_systems) section.
+
 This section inputs a list of x,y anchor positions, anchor type, and embedment depth. The anchor type links to the list in the anchor_types section.
-Additionally, a list of mooring lines can be input with specified attachments at FOWTs and anchors. To specify an anchor, use 'ANCH #' where # refers to the anchor ID in the anchor_data table.
-If there is an anchor connected to this line, it must be listed in end A, not end B. To specify a FOWT, use 'FOWT #' where # refers to the system ID in the array table. 
-The mooring lines each have a mooring configuration ID which links to the mooring_line_configs section. 
+
+
+Additionally, a list of mooring lines can be input in the line_data table with specified attachments at FOWTs and anchors. 
+
+If there is an anchor connected to this line, it must be listed 
+in end A, not end B. All anchors listed in line_data end A must have a matching ID in the anchor_data table, and all FOWTs listed in line_data end A or end B 
+must have a matching ID in the array_data table. The anchor and fowt IDs must all be unique. The mooring lines each have a mooring configuration ID which links to the [Mooring Line Configs](#mooring-line-configurations) section. 
 There is also an option to adjust the length of the line, depending on the spacing. 
 
 ```yaml
@@ -234,36 +318,81 @@ array_mooring:
     anchor_keys : 
           [ID, type,  x,  y,  embedment ]
     anchor_data :
-        - [  1,  suction1,   ,   ,     ]
-        - [  2,  suction1,   ,   ,     ]
+        - [  anch1,  suction1,   ,   ,     ]
+        - [  anch2,  suction1,   ,   ,     ]
     
     line_keys : 
           [MooringConfigID  ,  end A,   end B,  lengthAdjust]
     line_data :
-        - [ Taut-Poly_1      ,  ANCH 1,  FOWT 1,   0]
-        - [ Taut-Poly_1      ,  ANCH 2,  FOWT 1,   0]
-        - [ Taut-Poly_2      ,  FOWT 1,  FOWT 2,   0]
-
+        - [ semitaut-poly_1      ,  anch1,  fowt1,   0]
+        - [ semitaut-poly_1      ,  anch2,  fowt1,   0]
+        - [ semitaut-poly_2      ,  fowt1,  f2,   0]
 ```
 
 ### Array Cables
 
 This section provides a straightforward and compact way to define the power
-cables in the array. For each end (A and B) of the cable, it specifies the
-turbine attached to, the 
-[dynamic cable configuration](#dynamic-cable-configurations) used, and the heading
-of the dynamic cable. The type of the static cable is also specified.
-This method does not consider routing, and would assume the static cable takes
-a straight path from the ends of the dynamic cables. 
-For additional detail related to cable routing, the alternative [cable](#cables-with-routing)
-section should be used.
+cables in the array. The CableID refers to an entry in the [Top Level Cables](#top-level-cables) section. For each end (A and B) of the cable, it specifies the
+turbine (matching an ID in the [rray table](#array-layout)) or substation (matching an ID in the [Substation](#substations) section) it is
+attached to. 
+
+HeadingA and headingB refer to the heading of the cable at the attachment of each end, using headings relative to the heading of the platform or substation it is connected to, running clockwise. Cable routing and length adjustment information is also included.
+
+The route refers to a route specified in the [Cable Routing](#cable-routing) section.
+If there is no routing for a given cable, 'NA' may be used in its place.
+
+
+Additional detail related to subsections of the top level cable, and joints 
+is in the [Cables](#cables) section. 
+
 
 ```yaml
-array_cables:
-    keys:  [ AttachA,  AttachB,  DynCableA,  DynCableB, headingA, headingB, cableType]
+array_cables:   
+    keys:  [ CableID,       AttachA,   AttachB,      headingA, headingB, route, lengthAdjust]
     data:
-        - [ turbine1, turbine2, lazy_wave1, lazy_wave1,      180,       30, static_36] 
-        - [ turbine2, turbine3, lazy_wave1, lazy_wave1,      150,       30, static_36] 
+      - [ array_cable1,     fowt1,     f2,           270,      270,     route1,   0] 
+      - [ suspended_cable1, f2,     substation1,     90,        270,    NA,       0]  
+```
+
+### Cable Routing
+
+This section describes the route of a specific cable section. Coordinates of the routing (x and y) are required,
+while embedment depth and radius of curvature are optional. Joint locations are determined by the span and heading of the 
+cable, therefore joints are specified with the word 'joint' in the routing table rather than including the location. 
+All other routing vertices are listed with the coordinates and optional depth and curvature. The cable_configID refers 
+to a specific cable section of the array cable. Multiple cable sections may be listed for a specific route as long as they 
+are all part of the same array cable. 
+
+If a radius is specified but an embedment depth is not, NA will be used in the place of the embedment depth
+```yaml
+# Cable routing for each route called out in the array_cables table
+# consider making routing in a local reference frame (reference to the rA location?)   
+route_cables:
+    route1: 
+      - cable_configID: static_1
+        routing:
+          - joint 
+          - [2000,1500,10,50] # [x (m), y (m), embedment depth (m), radius (m)]
+          - [2100,1500,NA,15]
+          - joint
+```
+
+## Substation(s)
+
+The substation section defines the substations used in the array. The substation key (name) must be unique 
+from the ID keys in the array layout table.
+
+```yaml
+# ----- substations -------
+
+substation:
+    substation1:
+        x_location: 1600
+        y_location: -1600 
+        zFair: -20
+        rFair: 30
+        heading: 0
+
 ```
 
 ## Turbine(s)
@@ -280,7 +409,8 @@ by [WEIS](https://weis.readthedocs.io).
 This section defines the floating support structures used in the design. As in
 the previous section, it can contain a single platform or a list of platforms. 
 By default, the format here follows that used by 
-[RAFT](https://openraft.readthedocs.io) input files.
+[RAFT](https://openraft.readthedocs.io) input files, with the addition of 'rFair' and 'zFair' entries to the 
+dictionary for each platform in the first level of each platform listed. 
 However, support will be added for also linking to platform descriptions that follow
 the [WindIO](https://windio.readthedocs.io) ontology format, which is also used 
 by [WEIS](https://weis.readthedocs.io).
@@ -290,6 +420,8 @@ platform:
 
     potModMaster :   1      # [int] master switch for potMod variables; 0=keeps all member potMod vars the same, 1=turns all potMod vars to False (no HAMS), 2=turns all potMod vars to True (no strip)
     dlsMax       :  5.0     # maximum node splitting section amount for platform members; can't be 0
+    rFair        :  58 
+    zFair        :  -15
     
     members:   # list all members here
         
@@ -327,9 +459,9 @@ anchor characteristics.
 
 This section describes the mooring systems that could be used for individual turbines and repeated throughout the array. Each mooring system contains a 
 list of mooring lines, which contains the mooring configuration ID, the heading, the anchor type, and a possible length adjustment. The 
-mooring configuration ID links to the details about the segments lengths and types in the mooring line configurations section. The heading refers to the angle of the mooring line and it rotates 
-counterclockwise from +X. The anchor type links to details about the anchor 
-size and dimensions in the [anchor types section](#anchor-types). The length adjustment
+mooring configuration ID links to the details about the segments lengths and types in the [Mooring Line Configurations](#mooring-line-configurations) section. The heading refers to the angle of the mooring line and it rotates 
+clockwise from North, relative to the heading of the platform. The anchor type links to details about the anchor 
+size and dimensions in the [Anchor Types](#anchor-types) section. The length adjustment
 is an optional parameter that can adjust the mooring line length for a shallower or deeper depth, for example. 
 
 ```yaml
@@ -339,71 +471,84 @@ mooring_systems:
         
         keys: [MooringConfigID,  heading, anchorType, lengthAdjust] 
         data:
-          - [  taut-poly_1,   60 ,    suction 1,   0 ]
-          - [  taut-poly_1,  180 ,    suction 1,   0 ]
-          - [  taut-poly_1,  300 ,    suction 1,   0 ]
+          - [  semitaut-poly_1,   30 ,    suction 1,   0 ]
+          - [  semitaut-poly_1,  150 ,    suction 1,   0 ]
+          - [  semitaut-poly_1,  270 ,    suction 1,   0 ]
 ```
 
 ### Mooring Line Configurations
 
 The mooring line configurations lists the segment lengths and line types that make up each mooring line. Each line has a name that can then be specified 
-as the MooringConfigID in the mooring systems section. The anchoring radius (also known as the span), fairlead radius, and fairlead depth are also specified for each line configuration.
+as the MooringConfigID in the [Mooring Systems](#mooring-systems) section. The span is specified for each configuration, which represents the distance in the x-y plane between 
+the two connection points of the line - i.e. between fairlead and anchor, or for shared lines, fairlead and fairlead. 
+
+Fairlead radius and fairlead depth are specified in the [Platform](#platforms) section.
  Each line contains a list of sections that details the line section type and length. The line type name
-connects to information in the mooring [line section properties](#mooring-line-section-properties). 
+connects to information in the [Mooring Line Section Properties](#mooring-line-section-properties) if the keyword 'type' is used. If 'mooringFamily' is instead 
+specified (as in the catenary_1 example below), the mooring line properties are determined from MoorPy MoorProps values. In the latter case, the nominal diameter in [m] 'd_nom' must also be provided for that line section. 
 Additionally, before and after each line section has an optional input which can list the 
-ID of a [connector type](#mooring-connectors), such as an H-link or buoy. A connector is specified by using the key connectorType, while a line section is specified using the key type.
+ID of a [Connector type](#mooring-connectors), such as an H-link or buoy. 
 This information allows the weight and buoyancy of the connections to be included 
 in the model, and provides clarity on the location of the connector relative to different line sections. 
-Shared lines may have a 'symmetric' key used to describe whether the provided line configuration is half of a symmetric line 
-(symmetric: True) or a full line configuration (symmetric: False).If a connector is given 
-as the last item in the section list for a shared symmetric line, it is assumed that the provided connector is located in the center of the line.
-There is also a True/False options for whether the section length is adjustable. Note that line sections and connectors should be added to the sections list in order from end A to end B.
+There is also a True/False option for whether the section length is adjustable. 
+
+Shared or suspended lines may also have an optional 'symmetric' input which, if set to true, signifies that 
+the line is symmetric and only the first half of the line is provided in the 'sections' list. When loaded in to the project class, the mooring object will automatically be fully filled out by mirroring 
+the first half of the line. If a connector is provided as the last item in the sections list for a symmetric line, it is assumed that the middle line is two identical lines with the given connector between, otherwise 
+the middle line (last line given in the list) is doubled in length in the mirroring process. For example, the 'rope_shared' config in the yaml below would produce a symmetric shared line with sections in the following order
+a 150 m section of rope, a clump weight, a 1172 m section of rope (note the doubled length), a clump weight, and finally a 150 m section of rope.
 
 
 
 ```yaml
   mooring_line_configs:
     
-    taut-poly_1:  # mooring line configuration identifier
+    catenary_1:
+        name: catenary configuration 1
+        
+        span: 779.6 
+        
+        sections:
+          - mooringFamily: chain
+            d_nom: 0.185 # m
+            length: 850
+            adjustable: True 
+
+    semitaut-poly_1:  # mooring line configuration identifier
     
-        name: Taut polyester configuration 1  # descriptive name		
-		
-		anchoring_radius: 1131.37
-        fairlead_radius: 40.5
-        fairlead_depth: -20
+        name: Semitaut polyester configuration 1  # descriptive name
         
-        sections:
-		  - connectorType: shackke # ID of a connector type (optional)
-          - type: chain_160       # ID of a mooring line section type
-            length: 80            # [m] usntretched length of line section
-            adjustable: True      # flags that this section could be adjusted to accommodate different spacings...			
-		  - connectorType: h_link    # ID of a connector type (optional)       
-          - type: poly_180        # ID of a mooring line section type
-            length: 762           # [m] length (unstretched)			
-          - connectorType: shackle    # ID of a connector type (optional)
+        span: 642
+        
+        sections:                 #in order from anchor to fairlead
+          - type: chain_155mm       # ID of a mooring line section type
+            length: 497.7            # [m] usntretched length of line section
+            adjustable: True      # flags that this section could be adjusted to accommodate different spacings...
+          - connectorType: h_link   
+          - type: polyester_182mm        # ID of a mooring line section type
+            length: 199.8           # [m] length (unstretched)
 
 
-    shared-2-clump:
-        name: Shared line with two clump weights
-        symmetric: True		
-		
-		anchoring_radius: 1142
-        fairlead_radius: 58
-        fairlead_depth: -14
+    rope_shared:
+        name: shared rope 
+        symmetric: True
+
+        span: 1484
+
         
         sections:
-          - type: poly_180   
-            length: 80   			
-          - connectorType: clump_weight_20            
-          - type: poly_180
-            length: 762   
+          - type: rope
+            length: 150
+          - connectorType: clump_weight_80
+          - type: rope
+            length: 586
 
 ```    
     
-### Mooring line section properties
+### Mooring Line Section Properties
 
 The mooring line section properties contains the properties needed to accurately model the mooring lines. Each mooring line type is listed with 
-a name that can be referenced in the [mooring line configurations section](#mooring-line-configurations). 
+a name that can be referenced in the [Mooring Line Configurations](#mooring-line-configurations) section. 
 For each line type, the nominal and volume equivalent diameter are listed, 
 as well as the mass density, stiffness, cost, MBL, and material name. The ontology supports either a single stiffness value (like for chain)
 or the static-dynamic stiffness of fiber lines. An example of this is shown below. 
@@ -443,41 +588,82 @@ mooring_line_types:
 ### Mooring Connectors
 
 This section lists properties of the mooring connections that are referenced in the mooring line configurations section. 
-Each connector has a name that is used to identify it, as well as a mass and volume. Optionally, the CdA of the connector 
+Each connector has a name that is used to identify it, as well as a mass (m) and volume (v). Optionally, the CdA of the connector 
 can be specified to model the drag on the component. 
 ```yaml
  mooring_connector_types:
     
     h_link:
-        mass   : 140    # [kg]  component mass
-        volume : 0.13   # [m^3] component volumetric displacement
+        m : 140    # [kg]  component mass
+        v : 0.13   # [m^3] component volumetric displacement
         
     clump_weight_20:
-        mass   : 20000  # [kg]
-        volume :  0.8   # [m^3]
+        m : 20000  # [kg]
+        v :  0.8   # [m^3]
         
     buoy_10:
-        mass   :  560   # [kg]  component mass
-        volume : 10.2   # [m^3] component volumetric displacement
-        CdA    :  3.5   # [m^2] product of cross sectional area and drag coefficient
+        m  :  560   # [kg]  component mass
+        v  : 10.2   # [m^3] component volumetric displacement
+        CdA :  3.5   # [m^2] product of cross sectional area and drag coefficient
 ```
 
 ## Anchor types
 
-The anchor types section lists dimensions and embedment depth for each anchor type. The anchor types section
-allows the user to input the diameter, length, area, thickness, and embedment depth. All parameters are optional,
+The anchor types section lists dimensions and sometimes embedment depth for each anchor type. The anchor types section
+allows the user to input various geometric properties. All parameters are optional,
 because the applicable information depends on the anchor type. 
+
+The anchor types currently or in near future supported are:
+suction_pile (suction caisson/ suction pile anchor), DEA (drag-embedment anchor), dandg_pile (drilled and grouted pile anchor), driven_pile (driven pile anchor),
+torpedo_pile (torpedo pile anchor), SEPLA (suction embedded plate anchor), DEPLA (dynamically embedded plate anchor), VLA (vertically loaded anchor) and helical_pile (helical anchor).
+
+Note that zlug refers to the location of the connection point with the mooring line. A positive zlug is below the mudline, while a negative zlug
+is above the mudline.
+
+Required geometric inputs for each anchor type are shown in the yaml example below.
 The parameters align with the FAModel 
 [intermediate anchor model](https://github.com/FloatingArrayDesign/FAModel/tree/main/famodel/anchors#parameters-needed-for-level-2-anchor-capacity-models). 
 
 ```yaml        
+# Anchor type properties
 anchor_types:
-    suction1:
-        name   : standard suction pile
-        d      :    # [m] Diameter
-        L      :    # [m] Length
-        t      :    # [mm] Thickness
-        h      :    # [m] Embedment depth
+
+    drag-embedment1:
+        type   :  DEA   # type of anchor
+        A      :      # net area of anchor's fluke [m^2]
+        zlug   :      # embedded depth of padeye [m]
+    d-g_pile1:
+        type   :  dandg_pile
+        L      :      # length of pile [m]
+        D      :      # diameter of pile [m]
+        zlug   :      # embedded depth [m]
+    driven_pile1:
+        type   :  driven_pile
+        L      :      # pile length [m]
+        D      :      # pile diameter [m]
+        zlug   :      # embedded depth [m]
+    suction_pile1:
+        type   :  suction_pile
+        L      :     # length of pile [m]
+        D      :     # diameter of pile [m]
+        zlug   :     # embedded depth of padeye [m]
+    torpedo_pile1:
+        type   :  torpedo_pile
+        D1     :     # wing diameter [m]
+        D2     :     # shaft diameter [m]
+        L1     :     # wing length [m]
+        L2     :     # shaft length [m]
+        zlug   :     # embedded depth [m]
+    plate1:
+        type   :  SEPLA
+        A      :    # net area of the plate [m^2]
+        beta   :    # angle of the plate after keying process (optional) [deg]
+        zlug   :    # embedded depth of bridle or padeye [m]
+    helical1:
+        type   :  helical_pile
+        D      :      # helix diameter
+        L      :      # shaft length
+        d      :      # shaft diameter
 ```
 
 
@@ -485,100 +671,109 @@ anchor_types:
 
 This section describes the cables through the array including both static 
 and dynamic portions of cables. At the top level, each array cable going
-between a pair of turbines (or a turbine and a substation) is defined. 
-This definition can either occur in the [array_cables](#array-cables) 
-section or the [cables](#cables-with-routing) section. 
-The latter provides additional options for defining
-the cable routing and burial depth.
+between a pair of turbines (or a turbine and a substation) is defined. Each 
+subsection of cable is then defined in the [Cable Configurations](#cable-configs) 
+section, including buoyancy module layout. 
 
-### Cables with Routing
 
-The cables section contains a list of every cable in the array. Here, a cable
-is defined as the full assembly of electrical connection equipment between
-two turbines or a turbine and a substation. Similar to the [array_cables](#array-cables) 
-section, 'type' links to the cross-section property description of the static
-portion of the cable. endA and endB sections define what each end of the cable
-is attached to, at what heading it comes off at, and what dynamic cable
-profile it uses. Additional fields specify the routing of the static portion
-of the cable and the burial depth as as function of cable length.
+### Top Level Cables
+
+A top-level cableis defined as the full assembly of electrical connection equipment between
+two turbines or a turbine and a substation. 'type' links to the cable configuration description 
+of the subsections of the cable, which can be dynamic or static cables. The 'connectorType' refers to 
+an entry in the [Cable Joints](#cable-joints) section. The first entry in the sections list is connected 
+to end A, while the last entry is connected to end B.
 
 ```yaml
  cables:
 
-  - name : array_cable1      # descriptive cable name
-    type : static_cable_80   # cable section type ID
-    
-    endA: 
-        attachID: turbine_1            # FOWT/substation/junction ID
-        heading:  180                  # [deg] heading of attachment at end A
-        dynamicID: dynamic_lazy_wave1  # ID of dynamic cable configuration at this end
-    
-    endB:
-        attachID: turbine_2            # FOWT/substation/junction ID
-        heading:  30                   # [deg] heading of attachment at end B
-        dynamicID: dynamic_lazy_wave1  # ID of dynamic cable configuration at this end
-    
-    routing_x_y_r:  # optional vertex points along the cable route. Nonzero radius wraps around a point at that radius.
-      - [1000, 1200, 20] 
-      - [2000, 1500, 20] 
-    
-    burial:  # optional definition of cable burial depth over its length
-        station: [0, 1]                # length along cable, normalized by first and last value
-        depth  : [0.1, 0.2]            # [m] burial depth
+    array_cable1:      
+        name: array cable with lazy wave - static - lazy wave sections # descriptive cable name
+        # type : static_cable_80   # cable section type ID
+   
+        sections: # refers to a configuration in cable_configs
+        # first entry is at end A, last entry is at end B
+          - type: dynamic_lazy_wave1
+     
+          - connectorType: joint_1
+            
+          - type: static_1
+     
+          - connectorType: joint_1
+     
+          - type: dynamic_lazy_wave1
 
-  - name : array_cable_2     # descriptive cable name
-    type : static_cable_80   # cable section type ID
-    ...
+      
+    suspended_cable1:
+        sections: 
+          - type: dynamic_suspended_1
 ```
 
-## Dynamic Cable Configurations
+### Cable Configurations
 
-This section lists the dynamic cable configurations used in the array design.
-Similar to the mooring_line_configs section, it details the assembly of 
-cable section that make up a dynamic cable profile, with links to the cross
-sectional cable properties. Dynamic cable configurations have some special
-properties including specification of the voltage, and the option of 
-specifying 'appendages' along the cable length, which can represent [discrete
-objects](#cable-appendages) like buoyancy modules.
+This section lists the cable configurations used in the array design.
+The 'type' listed in the entry is either 'static' or 'dynamic'.
+The 'cableFamily' key is used when the cable cross-sectional information 
+will be imported from the cableProps_default yaml (in which case, an area A 
+must be provided in mm^2), and the value for cableFamily must match an entry in the cableProps_default yaml.
+
+Alternatively, if the cable cross-sectional properties will be provided in the [Cable Cross Sectional Properties](#cable-cross-sectional-properties)
+section, the key 'typeID' will be used in place of 'cableFamily', and will
+refer to an entry in the Cable Cross Sectional Properties list. 
+
+The sections list provides details on the layout of buoyancy modules and clump weights, including the 
+distance of the buoyancy section midpoint from end A, the number of modules, the spacing between modules, 
+and the volume. The volume is only needed if the buoyancy module properties will be imported 
+from the cableProps_defaul yaml. As with the cable properties, the 'type' in the sections list must refer to 
+an entry in either the [Cable Appendages](#cable-appendages) section or in the cableProps_default.yaml.
+
+Routing for static cables should be defined in the [Cable Routing](#cable-routing) section. If routing is needed, the length is not required to be included, as it can be calculated based on the attachment points and vertices of the route in the FAModel project.
+
+Similar to mooring lines, the span refers to the end to end distance of the line in the x-y plane.
 
 ```yaml
- dynamic_cable_configs:
-
-    lazy_wave1
+    basic1:
+        name: basic cable configuration, essentially a straight line between platforms
+        span: 1600 # [m]
+        type: dynamic
+        zJTube: -30 # depth out of J-tube that cable starts in m
+  
+        cableFamily: dynamic_cable_33
+        length: 1700 # [m]
+        A: 100 # cable conductor cross-sectional area [mm^2] (Required for types listed in cable props yaml)
+          
+          
+          
+        
+    dynamic_lazy_wave1:
         name: Lazy wave configuration 1 (simpler approach)
         voltage: 66 # [kV]
-        span :     # [m] horizontal distance to end of dynamic cable
+        span : 600    # [m] horizontal distance to end of dynamic cable
+        zJTube: -20 # depth the cable comes out of the j-tube
+        type: dynamic # dynamic or static
+        A: 300
         
-        sections:
-          - type: dynamic_cable_27        # ID of a cable section type1
-            length: 200                   # [m] length (unstretched)
-            
-          - type: dynamic_cable_27_w_buoy # (section properties including averaged effect of buoyancy modules)
-            length: 300                  
-            
-          - type: dynamic_cable_27 
-            length: 200            
-            
-        attachment:
-            type: j-tube
-            coordinate:   # relative location
-    
 
-    lazy_wave2
-        name: Lazy wave configuration 1 (more detailed approach)
-        voltage: # [kV]
-        span :     # [m] horizontal distance to end of dynamic cable
+        cableFamily: dynamic_cable_33        # ID of a cable section type1
+        length: 900                   # [m] length (unstretched) 
+       
+        sections: 
+          - type: Buoyancy_750m #_w_buoy # (section properties including averaged effect of buoyancy modules)
+            L_mid: 450 # [m] from end A
+            N_modules: 5 # number of modules in this buoyancy section
+            spacing: 21 # [m]
+            V: 2   # [m^2]         
+       
+    
+    static_1:
+        name: Static cable configuration 1 
+        voltage: 66 # [kV]
+        span: 350
+        type: static
         
-        sections:
-          - type: dynamic_cable_27        # ID of a cable section type1
-            length: 200                   # [m] length (unstretched)
-            appendages:
-                type: buoyancy_module_1
-                locations: [10,12,13.5,15,18]
-                
-        attachment:
-            type: j-tube
-            coordinate:   # relative location
+        typeID: static_cable_36
+        length: 2200
+            
 ```       
     
 ### Cable Cross Sectional Properties
@@ -620,7 +815,7 @@ such as buoyancy modules or cable protection system components. Each entry
 is given an identifier and can have a variety of parameters that describe
 its lumped properties, such as mass, volume, and drag coefficient-area
 product. These appendages are used in the 
-[dynamic_cable_configs](#dynamic-cable-configurations) section.
+[Cable Configs](#cable-configurations) section.
 
 ```yaml
   cable_appendages:
@@ -630,4 +825,15 @@ product. These appendages are used in the
         volume: 8.615   # [m^3] volumetric displacement 
         CdA:     3.8    # [m^2] product of cross-sectional area and drag coefficient
         length:  2.2    # [m]   length taked up along cable
+```
+
+### Cable Joints
+
+This section lists any cable joints that might connect cable subsections. Each entry is given 
+an identifier and parameters to describe the joint. These joints are used in the [Top Level Cables] 
+(#top-level-cables) section.
+```yaml
+cable_joints:
+    joint_1:
+        mass: 100000 # TBD
 ```
