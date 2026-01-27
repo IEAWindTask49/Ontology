@@ -1,0 +1,314 @@
+type: template of ontology yaml
+name: 
+comments: Use this template as a starting point for creating an ontology of a floating array design.
+# --- Notes ---
+# 1. This template contains all possible sections and options for an ontology file. Use only the sections and options that are relevant to your design.
+# 2. The ontology is designed to be flexible and modular. Design information can be included in different ways depending on the preferences or use cases of the user.
+# 3. Use !include 'filename.yaml' to include information from other yaml files in place of adding the full description 
+#    (do not use when listing a file name in sections below that accept file inputs - those should just be the file name as a string).
+# 4. Comments throughout the template provide guidance on how to fill out each section, but see Ontology README for more details.
+
+# Site condition information
+site:
+    general:
+        water_depth :   # [m]      uniform water depth
+        rho_water   :   # [kg/m^3] water density
+        rho_air     :   # [kg/m^3] air density
+        mu_air      :   #          air dynamic viscosity
+        
+    boundaries:  # project or lease area boundary, via file or vertex list
+        # Note: only one of the two options below should be used if including boundaries in the ontology
+        file:   # filename of x-y vertex coordinates
+        x_y:    # list of polygon vertices in order [m]
+
+    
+    exclusions:
+      - name: 
+        x_y_r:
+          - [x1, y1, r1] 
+      
+      - name: 
+        x_y_r:
+            -[x1, y1]
+            -[x2, y2]
+    
+    bathymetry:
+        # Note: only one of the two options below should be used if including boundaries in the ontology
+        file:   # filename of bathymetry data
+        x:      # list of x coordinates [m]
+        y:      # list of y coordinates [m]
+        depths: # 2D list of depths corresponding to x and y coordinates [m]
+
+    
+    seabed:
+      # Note: only one of the two options below should be used if including seabed soil type data in the ontology
+      file :   # filename of seabed soil type data
+      x :      # list of x coordinates [m]
+      y :      # list of y coordinates [m]
+    
+      type_array: # 2D list of soil type identifiers corresponding to x and y coordinates
+        
+      
+      soil_types:  
+        <layer name>:    # soil type identifier e.g. 'mud_firm'
+            layers: 
+            - soil_type: # type of soil layer (e.g. 'clay', 'sand', 'rock')
+              top:       # depth of top of layer [m]
+              bottom:    # depth of bottom of layer [m]
+              gamma_top: # unit weight at top of layer [kN/m^3] (for clay or sand layers)
+              gamma_bot: # unit weight at bottom of layer [kN/m^3] (for clay or sand layers)
+              phi_top:   # angle of internal friction at top of layer [deg] (for sand layers only)
+              phi_bot:   # angle of internal friction at bottom of layer [deg] (for sand layers only)
+              Dr_top:    # relative density at top of layer [%] (for sand layers only)
+              Dr_bot:    # relative density at bottom of layer [%] (for sand layers only)
+              Su_top:    # undrained shear strength at top of layer [kPa] (for clay layers only)
+              Su_bot:    # undrained shear strength at bottom of layer [kPa] (for clay layers only)
+              UCS_top:   # unconfined compressive strength at top of layer [MPa] (for rock layers only)
+              UCS_bot:   # unconfined compressive strength at bottom of layer [MPa] (for rock layers only)
+              Em_top:    # rock mass modulus at top of layer [MPa] (for rock layers only)
+              Em_bot:    # rock mass modulus at bottom of layer [MPa] (for rock layers only)
+
+    
+    metocean:
+        extremes:  # extreme values for specified return periods (in years)
+            keys :   [ Hs  , Tp  , WindSpeed, TI, Shear, Gamma, CurrentSpeed ]
+            data :
+                # return period [years] : values
+                
+        probabalistic_bins:
+            keys : [ prob , Hs  , Tp, WindSpeed, TI, Shear, Gamma, CurrentSpeed, WindDir, WaveDir, CurrentDir  ]
+            data :
+                
+        time_series :
+            file: 
+            
+    resource :
+        file: 
+        
+    RAFT_cases:
+        keys : [wind_speed, wind_heading, turbulence, turbine_status, yaw_misalign, wave_spectrum, wave_period, wave_height, wave_heading  ]
+        data :  #   m/s        deg    % or e.g. IIB_NTM    string            deg         string          (s)         (m)         (deg)
+
+
+    RAFT_settings:   
+        min_freq     :    #  [Hz]       lowest frequency to consider, also the frequency bin width     
+        max_freq     :    #  [Hz]       highest frequency to consider
+        XiStart      :    # sets initial amplitude of each DOF for all frequencies
+        nIter        :    # sets how many iterations to perform in Model.solveDynamics()
+        
+    marine_growth:
+        keys: [thickness, lowerRange, upperRange, density]
+        data:   #  (m)       (m)          (m)     (kg/m^3)
+
+        buoys: # thickness on buoyancy sections
+
+
+# ----- Array-level inputs -----
+
+# Wind turbine array layout
+array:
+    keys : [ID, topsideID, platformID, mooringID,   x_location,     y_location,  z_location, heading_adjust]
+    #       ID   ID#        ID#        ID            [m]             [m]          [m]         [deg]
+    # ID: unique identifier for that platform/turbine system (can be anything you want)
+    # topside ID: index in list of topsides, which includes wind turbines (indices starting at 1. 0 means there is no topside)
+    # platform ID: index in list of platforms, which includes FOWT platforms, substation platforms, etc. (indices starting at 1, 0 means there is no platform)
+    # mooringID: string/id of mooring system to apply to this platform if using mooring_system. If you want to define the mooring lines individually (i.e. through array_mooring table),
+    #            then set mooringID=0, which means there is no mooring system and we've instead individually defined the mooring lines in the array_mooring table.
+    # x_location: x coord of platform location 
+    # y_location: y coord of platform location
+    # z_location: z coord of platform location. For FOWTs generally is 0
+    # heading_adjust: rotation of platform relative to its 0 position defined for that platformID
+    data : 
+
+
+# Array-level mooring system (in addition to any per-turbine entries later)
+array_mooring:
+    anchor_keys :
+          [ID, type,  x,  y,  embedment ]
+          # ID: unique identifier for that anchor
+          # type: references the anchor design in the anchor_types section (key in anchor_types section)
+          # x: x coord of anchor location [m]
+          # y: y coord of anchor location [m]
+    anchor_data :
+          
+    line_keys : 
+          [MooringConfigID  ,  endA,   endB,  fairleadA, fairleadB]
+          # MooringConfigID: references the mooring line configuration in the mooring_line_configs section (key in mooring_line_configs section)
+          # endA: ID of attachment for one end of the mooring line (either platform ID from array table or anchor ID from anchor_data table)
+          # endB: ID of the other end of the mooring line. This end MUST be a platform ID from the array table (anchors are ALWAYS attached at endA)
+          # fairleadA: index of fairlead on endA platform (if endA is a platform). If endA is an anchor, set fairleadA to NONE. If multiple fairleads attached to mooring (i.e. bridles), list all attached fairleads. Indices start at 1
+          # fairleadB: index of fairlead on endB platform. If multiple fairleads attached to mooring (i.e. bridles), list all attached fairleads. Indices start at 1
+    line_data :
+
+
+# Array cables - this is one method to succintly define cables in the the array. It does not allow description of static cable routing- 
+# To add routing or burial information for a cable, define the cable using the Cables section further below.
+array_cables:   
+    keys:  [ AttachA,  AttachB,  DynCableA, DynCableB, JTubeA, JTubeB, headingA, headingB, cableType]
+    # AttachA: ID of attachment for end A of the cable (platform ID from array table )
+    # AttachB: ID of attachment for end B of the cable (platform ID from array table) 
+    # DynCableA: dynamic cable configuration ID at end A (matches key from dynamic_cables section)
+    # DynCableB: dynamic cable configuration ID at end B (matches key from dynamic_cables section). If there is only 1 dynamic cable (i.e. a suspended cable design), put NONE
+    # headingA: compass heading of dynamic cable relative to platform heading (if platform at end A is rotated +15, headingA should be true heading - 15)
+    # headingB: compass heading of dynamic cable relative to platform heading (if platform at end B is rotated +15, headingB should be true heading - 15)
+    # JtubeA: OPTIONAL KEY, index of Jtube on endA platform. Indices start at 1
+    # JtubeB: OPTIONAL KEY, index of Jtube on endB platform. Indices start at 1
+    # cableType: references a cable type from cable_types section. If no static cable (i.e. a suspended cable design), put NONE
+    data:
+
+
+# ----- Mooring system -----
+
+# Mooring system descriptions (this can be used to describe all mooring lines attached to a platform that are not shared)
+# One mooring system description can be applied to multiple platforms in the array table, even if they have different headings
+# The headings defined here are relative to the platform heading, so they will rotate with a platform heading.
+# If you wish to individually define each mooring line or want to define a shared mooring/mooring connected to a shared anchor, 
+# you must use the array_moorings section
+mooring_systems:
+
+    ms3:
+        name: # descriptive name
+        
+        keys: [MooringConfigID,  heading, anchorType, fairlead] # fairlead listings are optional; if not specified, fairlead location follows fairlead radius and depth provided in the platform definition
+        # MooringConfigID: references a key from mooring_line_configs section
+        # heading: compass heading, relative to platform heading
+        # anchorType: references a key from anchor_types section
+        # fairlead: OPTIONAL key that specifies index of a fairlead point listed in the associated platform design in the platforms section
+        data:
+
+
+# Mooring line configurations
+mooring_line_configs:
+            
+    <mooring line configuration ID>:  # mooring line configuration identifier
+        name:  # more descriptive name
+        
+        span:  # [m] horizontal distance from anchor to fairlead (or fairlead to fairlead for shared moorings)
+        
+        sections: # in order from anchor to fairlead
+        # List of sections that make up a mooring line, can be a mooring line type or a connector type.
+        # Mooring line sections must contain length. If using mooringFamily instead of mooring line type, must also provide nominal diameter d_nom.
+        # If a bridle or other parallel section, use a nested list to describe the parallel sections 
+    
+# Mooring line cross-sectional properties
+mooring_line_types:
+    
+    <mooring line type ID>:  # mooring line type identifier
+        d_nom:    # [m] nominal diameter
+        d_vol:    # [m] volume-equivalent diameter
+        m:        # [kg/m] mass per unit length (linear density)
+        EA:       # [N] quasi-static stiffness
+        MBL:      # [N] minimum breaking load
+        EAd:      # [N] dynamic stiffness
+        EAd_Lm:   # [-] dynamic stiffness mean-load multiplier
+        cost:     # [$/m] cost per unit length
+        material: # [-] material composition descriptor e.g. polyester
+
+
+# Mooring connector properties
+mooring_connector_types:
+    
+    <mooring connector type ID>:  # mooring connector type identifier
+        m   :  # [kg]  component mass
+        v   :  # [m^3] component volumetric displacement
+        CdA :  # [m^2] product of cross sectional area and drag coefficient
+
+# Anchor type properties
+anchor_types:
+
+    <anchor design ID>:
+        type   :  # type of anchor
+        # Note: additional properties can be defined here, depending on the anchor type
+
+
+          
+# Dynamic and static cable configurations
+dynamic_cable_configs:
+# contains the subsections that make up each section of the subsea cable            
+    <dynamic cable configuration ID>:  # dynamic cable configuration identifier
+        name:         # descriptive name
+        voltage:      # [kV]
+        span :        # [m] horizontal distance to end of dynamic cable from attachment point
+        A:            # [mm^2] cross-sectional area of each conductor
+        cable_type:   # ID of a cable section type1
+        length:       # [m] length (unstretched) 
+       
+        sections: # list of buoyancy module and other cable appendage sections along the dynamic cable from end A to end B
+        # Buoyancy module sections are defined by specifying the buoy type, location along the cable, number of modules, spacing, and optionally volume per module
+
+# Cables section is an alternate method of defining cables in the array. A new list entry is made for each cable
+# This method is more descriptive than the array_cables section, allowing for routing points and burial depths of static cables        
+cables:
+  - name :    # descriptive cable name
+    type :    # cable section type ID
+  
+    endA: 
+        attachID:     # FOWT/substation/junction ID
+        heading:      # [deg] heading of attachment at end A (compass heading)
+        dynamicID:    # ID of dynamic cable configuration at this end
+        JTube:        # index of Jtube list in platform definition, optional
+    
+    endB:
+        attachID:     # FOWT/substation/junction ID
+        heading:      # [deg] heading of attachment at end B
+        dynamicID:    # ID of dynamic cable configuration at this end
+        JTube:        # index of Jtube list in platform definition, optional
+    
+    routing_x_y_r:    # optional vertex points along the cable route. Nonzero radius wraps around a point at that radius.
+
+    
+    burial:           # optional definition of cable burial depth over its length
+        station:      # length along cable, normalized by first and last value
+        depth  :      # [m] burial depth
+        
+# Cable cross-sectional properties
+cable_types:
+
+    <cable type ID>: # cable type identifier
+        kV   :        # [kV] voltage rating
+        A    :        # [mm^2] cross-sectional area of each conductor (3 conductors)
+        d    :        # [m] outer diameter
+        m    :        # [kg/m] mass per unit length
+        EA   :        # [kN] axial stiffness 
+        EI   :        # [kN.m^2] bending stiffness
+        MBL  :        # [kN] minimum breaking load
+        MBR  :        # [m] minimum bending radius
+        cost :        # [$/m] cost per unit length
+
+# Cable appendages
+cable_appendages:
+
+    <appendage ID>:  # cable appendage identifier
+        type:    # type of appendage e.g. buoy, bend_stiffener, joint
+        m :      # [kg]  mass
+        volume : # [m^3] volumetric displacement 
+        CdA:     # [m^2] product of cross-sectional area and drag coefficient
+        l :      # [m]   length along cable
+        density: # [kg/m^3] material density (for buoyancy modules)
+        w :      # [N]   weight (for buoyancy modules)
+        d :      # [m] diameter
+
+# ----- topsides and platforms -----
+
+topsides:
+        
+  - type: # type of topside e.g. Turbine, Substation 
+    # RAFT turbine or topside definitions to describe geometry and mass properties of the topside can be added here. See RAFT documentation for details.
+    
+
+platforms:
+
+  - fairleads    :  # list of fairlead coordinates for the platform relative to platform coordinate and 0-degree heading
+                   - name:      # descriptive name
+                     r_rel:     # relative position of fairlead to platform center [m]
+                     headings:  # headings in degrees for the fairlead rotation of the r_rel [OPTIONAL! Do not need the headings] (if multiple headings, the fairlead will be repeated for each heading)
+    JTubes       :  # list of Jtube coordinates for the platform relative to platform coordinate and 0-degree heading
+                   - name:      # descriptive name
+                     r_rel:     # relative position of fairlead to platform center [m]
+                     headings:  # headings in degrees for the JTube rotation of the r_rel [OPTIONAL! Do not need the headings] (if multiple headings, the fairlead will be repeated for each heading)
+    type         :   # type of platform e.g. FOWT, Substation, WEC, Tidal
+    z_location   :   # optional to put the depth of this platform type
+
+    # RAFT platform definitions to describe geometry and mass properties of the platform can be added here. See RAFT documentation for details.
+
+

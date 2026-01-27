@@ -1,0 +1,83 @@
+# Definition of UMaine VolturnUS-S platform
+# - - - - IEA Wind Task 49 Ontology requirements - - - -
+type: FOWT   # this platform is used for a floating offshore wind turbine
+rFair: 58    # fairlead radius
+zFair: -15   # fairlead depth
+# - - - - RAFT UMaine VolturnUS-S definition - - - - 
+potModMaster: 1
+dlsMax: 5.0
+qtfPath: IEA-15-240-RWT-UMaineSemi.12d
+members:
+- name: center_column
+  type: rigid
+  rA: [0, 0, -20]
+  rB: [0, 0, 15]
+  shape: circ
+  gamma: 0.0
+  potMod: true
+  stations: [0, 1]
+  d: 10.0
+  t: 0.05
+  Cd: 0.6
+  Ca: 0.93
+  CdEnd: 0.6
+  CaEnd: 1.0
+  rho_shell: 7850
+  cap_stations: [0]
+  cap_t: [0.001]
+  cap_d_in: [0]
+- name: outer_column
+  type: rigid
+  rA: [51.75, 0, -20]
+  rB: [51.75, 0, 15]
+  heading: [60, 180, 300]
+  shape: circ
+  gamma: 0.0
+  potMod: true
+  stations: [0, 35]
+  d: 12.5
+  t: 0.05
+  Cd: 0.6
+  Ca: 0.93
+  CdEnd: 1.0
+  CaEnd: 0.7
+  rho_shell: 7850
+  l_fill: 1.4
+  rho_fill: 5000
+  cap_stations: [0]
+  cap_t: [0.001]
+  cap_d_in: [0]
+- name: pontoon
+  type: rigid
+  rA: [5, 0, -16.5]
+  rB: [45.5, 0, -16.5]
+  heading: [60, 180, 300]
+  shape: rect
+  gamma: 0.0
+  potMod: false
+  stations: [0, 40.5]
+  d: [12.4, 7.0]
+  t: 0.05
+  Cd: [1.5, 2.2]
+  Ca: [2.2, 0.2]
+  CdEnd: 0.0
+  CaEnd: 0.0
+  rho_shell: 7850
+  l_fill: 40.5
+  rho_fill: 1025.0
+- name: upper_support
+  type: rigid
+  rA: [5, 0, 14.545]
+  rB: [45.5, 0, 14.545]
+  heading: [60, 180, 300]
+  shape: circ
+  gamma: 0.0
+  potMod: false
+  stations: [0, 1]
+  d: 0.91
+  t: 0.01
+  Cd: 0.0
+  Ca: 0.0
+  CdEnd: 0.0
+  CaEnd: 0.0
+  rho_shell: 7850

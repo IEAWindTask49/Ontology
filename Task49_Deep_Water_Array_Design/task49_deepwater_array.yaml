@@ -1,0 +1,1059 @@
+site:
+  bathymetry:
+    x: [-2500.0, 2000.0]
+    y: [-2500.0, -800.0]
+    depths:
+    - [800.0, 800.0]
+    - [800.0, 800.0]
+  boundaries:
+    x_y:
+    - [0.0, 0.0]
+    - [0.0, 16000.0]
+    - [16000.0, 16000.0]
+    - [16000.0, 0.0]
+    - [0.0, 0.0]
+  general:
+    water_depth: 800.0
+    rho_air: 1.225
+    rho_water: 1025.0
+    mu_air: 1.81e-05
+array:
+  keys: [ID, topsideID, platformID, mooringID, x_location, y_location, z_location,
+    heading_adjust]
+  data:
+  - [fowt0, 1, 1, ms0, 12822.7, 1677.22, 0.0, -250.00000000000003]
+  - [fowt1, 1, 1, ms0, 13404.7, 3276.2, 0.0, -250.00000000000003]
+  - [fowt2, 1, 1, ms0, 13986.7, 4875.18, 0.0, -250.00000000000003]
+  - [fowt3, 1, 1, ms0, 11388.4, 2199.28, 0.0, -430.0]
+  - [fowt4, 1, 1, ms0, 11970.4, 3798.26, 0.0, -430.0]
+  - [fowt5, 1, 1, ms0, 12552.3, 5397.24, 0.0, -430.0]
+  - [fowt6, 1, 1, ms0, 13134.3, 6996.22, 0.0, -430.0]
+  - [fowt7, 1, 1, ms0, 13716.3, 8595.2, 0.0, -430.0]
+  - [fowt8, 1, 1, ms0, 14298.3, 10194.2, 0.0, -430.0]
+  - [fowt9, 1, 1, ms0, 9954.03, 2721.34, 0.0, -250.00000000000003]
+  - [fowt10, 1, 1, ms0, 10536.0, 4320.32, 0.0, -250.00000000000003]
+  - [fowt11, 1, 1, ms0, 11118.0, 5919.3, 0.0, -250.00000000000003]
+  - [fowt12, 1, 1, ms0, 11700.0, 7518.28, 0.0, -250.00000000000003]
+  - [fowt13, 1, 1, ms0, 12282.0, 9117.26, 0.0, -250.00000000000003]
+  - [fowt14, 1, 1, ms0, 12863.9, 10716.2, 0.0, -250.00000000000003]
+  - [fowt15, 1, 1, ms0, 13445.9, 12315.2, 0.0, -250.00000000000003]
+  - [fowt16, 1, 1, ms0, 14027.9, 13914.2, 0.0, -250.00000000000003]
+  - [fowt17, 1, 1, ms0, 7937.71, 1644.42, 0.0, -430.0]
+  - [fowt18, 1, 1, ms0, 8519.69, 3243.4, 0.0, -430.0]
+  - [fowt19, 1, 1, ms0, 9101.67, 4842.38, 0.0, -430.0]
+  - [fowt20, 1, 1, ms0, 9683.65, 6441.36, 0.0, -430.0]
+  - [fowt21, 1, 1, ms0, 10265.6, 8040.34, 0.0, -430.0]
+  - [fowt22, 1, 1, ms0, 10847.6, 9639.32, 0.0, -430.0]
+  - [fowt23, 1, 1, ms0, 11429.6, 11238.3, 0.0, -430.0]
+  - [fowt24, 1, 1, ms0, 12011.6, 12837.3, 0.0, -430.0]
+  - [fowt25, 1, 1, ms0, 12593.6, 14436.3, 0.0, -430.0]
+  - [fowt26, 1, 1, ms0, 6503.36, 2166.48, 0.0, -250.00000000000003]
+  - [fowt27, 1, 1, ms0, 7085.34, 3765.46, 0.0, -250.00000000000003]
+  - [fowt28, 1, 1, ms0, 7667.32, 5364.44, 0.0, -250.00000000000003]
+  - [fowt29, 1, 1, ms0, 8249.3, 6963.42, 0.0, -250.00000000000003]
+  - [fowt30, 1, 1, ms0, 8831.28, 8562.4, 0.0, -250.00000000000003]
+  - [fowt31, 1, 1, ms0, 9413.27, 10161.4, 0.0, -250.00000000000003]
+  - [fowt32, 1, 1, ms0, 9995.25, 11760.4, 0.0, -250.00000000000003]
+  - [fowt33, 1, 1, ms0, 10577.2, 13359.3, 0.0, -250.00000000000003]
+  - [fowt34, 1, 1, ms0, 5069.01, 2688.54, 0.0, -430.0]
+  - [fowt35, 1, 1, ms0, 5650.99, 4287.52, 0.0, -430.0]
+  - [fowt36, 1, 1, ms0, 6232.98, 5886.5, 0.0, -430.0]
+  - [fowt37, 1, 1, ms0, 6814.96, 7485.48, 0.0, -430.0]
+  - [fowt38, 1, 1, ms0, 7396.94, 9084.46, 0.0, -430.0]
+  - [fowt39, 1, 1, ms0, 7978.92, 10683.4, 0.0, -430.0]
+  - [fowt40, 1, 1, ms0, 8560.9, 12282.4, 0.0, -430.0]
+  - [fowt41, 1, 1, ms0, 9142.88, 13881.4, 0.0, -430.0]
+  - [fowt42, 1, 1, ms0, 3052.68, 1611.61, 0.0, -250.00000000000003]
+  - [fowt43, 1, 1, ms0, 3634.67, 3210.6, 0.0, -250.00000000000003]
+  - [fowt44, 1, 1, ms0, 4216.65, 4809.58, 0.0, -250.00000000000003]
+  - [fowt45, 1, 1, ms0, 4798.63, 6408.56, 0.0, -250.00000000000003]
+  - [fowt46, 1, 1, ms0, 5380.61, 8007.54, 0.0, -250.00000000000003]
+  - [fowt47, 1, 1, ms0, 5962.59, 9606.52, 0.0, -250.00000000000003]
+  - [fowt48, 1, 1, ms0, 6544.57, 11205.5, 0.0, -250.00000000000003]
+  - [fowt49, 1, 1, ms0, 7126.55, 12804.5, 0.0, -250.00000000000003]
+  - [fowt50, 1, 1, ms0, 7708.54, 14403.5, 0.0, -250.00000000000003]
+  - [fowt51, 1, 1, ms0, 1618.34, 2133.67, 0.0, -430.0]
+  - [fowt52, 1, 1, ms0, 2200.32, 3732.66, 0.0, -430.0]
+  - [fowt53, 1, 1, ms0, 2782.3, 5331.64, 0.0, -430.0]
+  - [fowt54, 1, 1, ms0, 3364.28, 6930.62, 0.0, -430.0]
+  - [fowt55, 1, 1, ms0, 3946.26, 8529.6, 0.0, -430.0]
+  - [fowt56, 1, 1, ms0, 4528.24, 10128.6, 0.0, -430.0]
+  - [fowt57, 1, 1, ms0, 5110.23, 11727.6, 0.0, -430.0]
+  - [fowt58, 1, 1, ms0, 5692.21, 13326.5, 0.0, -430.0]
+  - [fowt59, 1, 1, ms0, 1929.93, 7452.68, 0.0, -250.00000000000003]
+  - [fowt60, 1, 1, ms0, 2511.92, 9051.66, 0.0, -250.00000000000003]
+  - [fowt61, 1, 1, ms0, 3093.9, 10650.6, 0.0, -250.00000000000003]
+  - [fowt62, 1, 1, ms0, 3675.88, 12249.6, 0.0, -250.00000000000003]
+  - [fowt63, 1, 1, ms0, 4257.86, 13848.6, 0.0, -250.00000000000003]
+  - [fowt64, 1, 1, ms0, 1659.55, 11172.7, 0.0, -430.0]
+  - [fowt65, 1, 1, ms0, 2241.53, 12771.7, 0.0, -430.0]
+  - [fowt66, 1, 1, ms0, 2823.51, 14370.7, 0.0, -430.0]
+  - [substation, 0, 2, 0, 14568.7, 6474.16, 0.0, 0.0] # no mooring system associated with substation.
+
+platforms:
+- !include UMaine_VolturnUS-S.yaml # PlatformID 1 is UMaine VolturnUS-S platform for a FOWT. This file is the definition file.
+- !include Substation_UMaine_VolturnUS-S.yaml # PlatformID 2 is platform for a Substation. This file is the definition file.
+
+topsides:
+- !include IEA-15-240-RWT_definition.yaml # topsideID 1 is IEA 15 MW wind turbine definition. This file is the definition file
+
+
+mooring_systems:
+  ms0:
+    keys: [MooringConfigID, heading, anchorType]
+    data:
+    - [taut_config, 150.0, suction1]
+    - [taut_config, 270.0, suction1]
+    - [taut_config, 30.0,  suction1]
+
+mooring_line_configs:
+  taut_config:
+    name: taut mooring line configuration
+    span: 1342.0
+    sections:
+    - connectorType: shackle
+    - type: chain_140mm
+      length: 80.0
+    - connectorType: h_link
+    - type: polyester_200mm
+      length: 560.0
+    - connectorType: clump_weight_40
+    - type: polyester_200mm
+      length: 870.0
+    - connectorType: h_link
+    - type: chain_140mm
+      length: 40.0
+    - connectorType: shackle
+
+mooring_line_types:
+  chain_140mm:
+    d_nom: 0.14
+    d_vol: 0.256
+    m: 403.28
+    EA: 1730000000.0
+    MBL: 18130000.0
+    cost: 1790.56
+    material: chain
+    material details: R3 studless
+    name: chain_140mm
+    w: 3438.6144397003363
+  polyester_200mm:
+    d_nom: 0.2
+    d_vol: 0.158
+    m: 27.16
+    EA: 172000000.0
+    MBL: 12320000.0
+    EAd: '1.779e8'
+    EAd_Lm: 0.11
+    cost: 202.95
+    material: polyester
+    name: polyester_200mm
+    w: 69.2895334332153
+mooring_connector_types:
+  shackle:
+    m: 0.0
+    v: 0.2
+    type: shackle
+    CdA: 0
+  h_link:
+    m: 0.0
+    v: 0.13
+    type: h_link
+    CdA: 0
+  clump_weight_40:
+    m: 40000.0
+    v: 0.8
+    type: clump_weight_40
+    CdA: 0
+anchor_types:
+  suction1:
+    type: suction
+    d: 3.53
+    L: 17.7
+    m: 72000
+    
+cables:
+- name: array_cable0             # ID of array cable
+  endA:
+    attachID: fowt26             # ID of platform the cable is attached to at end A
+    heading: 359.99997511438613  # heading of cable at end A relative to platform heading
+    dynamicID: dynamic_0         # dynamic cable configuration ID for end A
+  endB:
+    attachID: fowt17             # ID of platform the cable is attached to at end B
+    heading: 359.99997511438613  # heading of cable at end B relative to platform heading
+    dynamicID: None              # This is a suspended cable; there is not a separate dynamic cable configuration for end B
+  type: None                     # This is a suspended cable; there is not a static cable type
+- name: array_cable1
+  endA:
+    attachID: fowt34
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt26
+    heading: 180.32611518095663
+    dynamicID: None
+  type: None
+- name: array_cable2
+  endA:
+    attachID: fowt43
+    heading: 359.70368352982433
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt34
+    heading: 359.70368352982433
+    dynamicID: None
+  type: None
+- name: array_cable3
+  endA:
+    attachID: fowt52
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt43
+    heading: 180.32611518095663
+    dynamicID: None
+  type: None
+- name: array_cable4
+  endA:
+    attachID: fowt51
+    heading: 415.9
+    dynamicID: dynamic_2
+  endB:
+    attachID: fowt52
+    heading: 664.1
+    dynamicID: dynamic_2
+  type: stat_cab_300
+- name: array_cable5
+  endA:
+    attachID: fowt42
+    heading: 180.00010349729746
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt51
+    heading: 540.0001034972975
+    dynamicID: None
+  type: None
+- name: array_cable6
+  endA:
+    attachID: fowt17
+    heading: 540.0
+    dynamicID: dynamic_3
+  endB:
+    attachID: substation
+    heading: 164.89999999999998
+    dynamicID: dynamic_3
+  type: stat_cab_630
+  routing_x_y_r:
+  - [12820, 1680]
+  - [13533, 2388]
+- name: array_cable7
+  endA:
+    attachID: fowt3
+    heading: 540.0006170447502
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt0
+    heading: 180.00061704475021
+    dynamicID: None
+  type: None
+- name: array_cable8
+  endA:
+    attachID: fowt9
+    heading: 359.9997183533057
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt3
+    heading: 359.99971835330564
+    dynamicID: None
+  type: None
+- name: array_cable9
+  endA:
+    attachID: fowt18
+    heading: 540.0001034972975
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt9
+    heading: 180.00010349729743
+    dynamicID: None
+  type: None
+- name: array_cable10
+  endA:
+    attachID: fowt27
+    heading: 359.99997511438613
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt18
+    heading: 359.99997511438613
+    dynamicID: None
+  type: None
+- name: array_cable11
+  endA:
+    attachID: fowt35
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt27
+    heading: 180.32611518095663
+    dynamicID: None
+  type: None
+- name: array_cable12
+  endA:
+    attachID: fowt44
+    heading: 359.70368352982433
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt35
+    heading: 359.7036835298243
+    dynamicID: None
+  type: None
+- name: array_cable13
+  endA:
+    attachID: fowt53
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt44
+    heading: 180.3261151809566
+    dynamicID: None
+  type: None
+- name: array_cable14
+  endA:
+    attachID: fowt0
+    heading: 294.40000000000003
+    dynamicID: dynamic_3
+  endB:
+    attachID: substation
+    heading: 164.89999999999998
+    dynamicID: dynamic_3
+  type: stat_cab_630
+- name: array_cable15
+  endA:
+    attachID: fowt4
+    heading: 540.0006170447502
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt1
+    heading: 180.00061704475021
+    dynamicID: None
+  type: None
+- name: array_cable16
+  endA:
+    attachID: fowt10
+    heading: 359.99933322353974
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt4
+    heading: 359.99933322353974
+    dynamicID: None
+  type: None
+- name: array_cable17
+  endA:
+    attachID: fowt19
+    heading: 540.0002318817895
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt10
+    heading: 180.00023188178946
+    dynamicID: None
+  type: None
+- name: array_cable18
+  endA:
+    attachID: fowt28
+    heading: 359.99997511438613
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt19
+    heading: 359.99997511438613
+    dynamicID: None
+  type: None
+- name: array_cable19
+  endA:
+    attachID: fowt36
+    heading: 540.0001034972975
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt28
+    heading: 180.00010349729746
+    dynamicID: None
+  type: None
+- name: array_cable20
+  endA:
+    attachID: fowt45
+    heading: 359.9999751143862
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt36
+    heading: 359.9999751143862
+    dynamicID: None
+  type: None
+- name: array_cable21
+  endA:
+    attachID: fowt54
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt45
+    heading: 180.32611518095658
+    dynamicID: None
+  type: None
+- name: array_cable22
+  endA:
+    attachID: fowt59
+    heading: 359.9999751143862
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt54
+    heading: 359.9999751143862
+    dynamicID: None
+  type: None
+- name: array_cable23
+  endA:
+    attachID: fowt1
+    heading: 299.0
+    dynamicID: dynamic_4
+  endB:
+    attachID: substation
+    heading: 164.89999999999998
+    dynamicID: dynamic_4
+  type: stat_cab_1000
+- name: array_cable24
+  endA:
+    attachID: fowt5
+    heading: 540.3254611299899
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt2
+    heading: 180.3254611299899
+    dynamicID: None
+  type: None
+- name: array_cable25
+  endA:
+    attachID: fowt11
+    heading: 359.70419177382723
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt5
+    heading: 359.70419177382723
+    dynamicID: None
+  type: None
+- name: array_cable26
+  endA:
+    attachID: fowt20
+    heading: 540.3261151809565
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt11
+    heading: 180.32611518095655
+    dynamicID: None
+  type: None
+- name: array_cable27
+  endA:
+    attachID: fowt29
+    heading: 359.9999751143862
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt20
+    heading: 359.9999751143862
+    dynamicID: None
+  type: None
+- name: array_cable28
+  endA:
+    attachID: fowt37
+    heading: 540.0001034972975
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt29
+    heading: 180.00010349729743
+    dynamicID: None
+  type: None
+- name: array_cable29
+  endA:
+    attachID: fowt46
+    heading: 359.9999751143862
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt37
+    heading: 359.9999751143862
+    dynamicID: None
+  type: None
+- name: array_cable30
+  endA:
+    attachID: fowt55
+    heading: 540.3261151809567
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt46
+    heading: 180.32611518095666
+    dynamicID: None
+  type: None
+- name: array_cable31
+  endA:
+    attachID: fowt60
+    heading: 359.7036835298243
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt55
+    heading: 359.7036835298243
+    dynamicID: None
+  type: None
+- name: array_cable32
+  endA:
+    attachID: fowt2
+    heading: 304.1
+    dynamicID: dynamic_4
+  endB:                            # This is a cable with lazy-wave configurations, not suspended
+    attachID: substation
+    heading: 164.89999999999998
+    dynamicID: dynamic_4           # dynamic cable configuration ID for end B
+  type: stat_cab_1000              # static cable type
+- name: array_cable33
+  endA:
+    attachID: fowt12
+    heading: 359.70419177382723
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt6
+    heading: 359.70419177382723
+    dynamicID: None
+  type: None
+- name: array_cable34
+  endA:
+    attachID: fowt21
+    heading: 540.32546112999
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt12
+    heading: 180.32546112998998
+    dynamicID: None
+  type: None
+- name: array_cable35
+  endA:
+    attachID: fowt30
+    heading: 359.7039376486786
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt21
+    heading: 359.7039376486786
+    dynamicID: None
+  type: None
+- name: array_cable36
+  endA:
+    attachID: fowt38
+    heading: 540.0001034972975
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt30
+    heading: 180.0001034972975
+    dynamicID: None
+  type: None
+- name: array_cable37
+  endA:
+    attachID: fowt47
+    heading: 359.99997511438613
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt38
+    heading: 359.99997511438613
+    dynamicID: None
+  type: None
+- name: array_cable38
+  endA:
+    attachID: fowt56
+    heading: 540.0006805661347
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt47
+    heading: 180.00068056613466
+    dynamicID: None
+  type: None
+- name: array_cable39
+  endA:
+    attachID: fowt61
+    heading: 359.99798709281185
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt56
+    heading: 359.99798709281185
+    dynamicID: None
+  type: None
+- name: array_cable40
+  endA:
+    attachID: fowt64
+    heading: 540.0013860115604
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt61
+    heading: 180.00138601156036
+    dynamicID: None
+  type: None
+- name: array_cable41
+  endA:
+    attachID: fowt6
+    heading: 540.1626668755343
+    dynamicID: dynamic_5
+  endB:
+    attachID: substation
+    heading: -69.83733312446566
+    dynamicID: None
+  type: None
+- name: array_cable42
+  endA:
+    attachID: fowt13
+    heading: 359.70419177382723
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt7
+    heading: 359.70419177382723
+    dynamicID: None
+  type: None
+- name: array_cable43
+  endA:
+    attachID: fowt22
+    heading: 540.32546112999
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt13
+    heading: 180.32546112999
+    dynamicID: None
+  type: None
+- name: array_cable44
+  endA:
+    attachID: fowt31
+    heading: 359.7045201630498
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt22
+    heading: 359.7045201630498
+    dynamicID: None
+  type: None
+- name: array_cable45
+  endA:
+    attachID: fowt39
+    heading: 540.3239962996774
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt31
+    heading: 180.32399629967742
+    dynamicID: None
+  type: None
+- name: array_cable46
+  endA:
+    attachID: fowt48
+    heading: 359.7049756003126
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt39
+    heading: 359.7049756003126
+    dynamicID: None
+  type: None
+- name: array_cable47
+  endA:
+    attachID: fowt57
+    heading: 540.0015144020067
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt48
+    heading: 180.0015144020067
+    dynamicID: None
+  type: None
+- name: array_cable48
+  endA:
+    attachID: fowt62
+    heading: 359.997858721204
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt57
+    heading: 359.997858721204
+    dynamicID: None
+  type: None
+- name: array_cable49
+  endA:
+    attachID: fowt65
+    heading: 540.0013860115604
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt62
+    heading: 180.00138601156038
+    dynamicID: None
+  type: None
+- name: array_cable50
+  endA:
+    attachID: fowt7
+    heading: 590.0
+    dynamicID: dynamic_4
+  endB:
+    attachID: substation
+    heading: 19.999999999999964
+    dynamicID: dynamic_4
+  type: stat_cab_1000
+- name: array_cable51
+  endA:
+    attachID: fowt14
+    heading: 359.9972168868735
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt8
+    heading: 359.9972168868735
+    dynamicID: None
+  type: None
+- name: array_cable52
+  endA:
+    attachID: fowt23
+    heading: 540.0020279796004
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt14
+    heading: 180.00202797960037
+    dynamicID: None
+  type: None
+- name: array_cable53
+  endA:
+    attachID: fowt32
+    heading: 359.7049756003126
+    dynamicID: dynamic_0
+  endB:
+    attachID: fowt23
+    heading: 359.7049756003126
+    dynamicID: None
+  type: None
+- name: array_cable54
+  endA:
+    attachID: fowt40
+    heading: 540.3239962996774
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt32
+    heading: 180.32399629967742
+    dynamicID: None
+  type: None
+- name: array_cable55
+  endA:
+    attachID: fowt49
+    heading: 359.7049756003126
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt40
+    heading: 359.7049756003126
+    dynamicID: None
+  type: None
+- name: array_cable56
+  endA:
+    attachID: fowt58
+    heading: 540.3241271034402
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt49
+    heading: 180.3241271034402
+    dynamicID: None
+  type: None
+- name: array_cable57
+  endA:
+    attachID: fowt63
+    heading: 359.7049756003126
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt58
+    heading: 359.7049756003126
+    dynamicID: None
+  type: None
+- name: array_cable58
+  endA:
+    attachID: fowt66
+    heading: 540.0013860115604
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt63
+    heading: 180.00138601156038
+    dynamicID: None
+  type: None
+- name: array_cable59
+  endA:
+    attachID: fowt8
+    heading: 590.0
+    dynamicID: dynamic_4
+  endB:
+    attachID: substation
+    heading: 19.999999999999964
+    dynamicID: dynamic_4
+  type: stat_cab_1000
+- name: array_cable60
+  endA:
+    attachID: fowt24
+    heading: 540.0020279796004
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt15
+    heading: 180.00202797960037
+    dynamicID: None
+  type: None
+- name: array_cable61
+  endA:
+    attachID: fowt33
+    heading: 359.9972168868735
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt24
+    heading: 359.9972168868735
+    dynamicID: None
+  type: None
+- name: array_cable62
+  endA:
+    attachID: fowt41
+    heading: 540.0017711876418
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt33
+    heading: 180.00177118764185
+    dynamicID: None
+  type: None
+- name: array_cable63
+  endA:
+    attachID: fowt50
+    heading: 359.70510266503976
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt41
+    heading: 359.70510266503976
+    dynamicID: None
+  type: None
+- name: array_cable64
+  endA:
+    attachID: fowt16
+    heading: 415.7
+    dynamicID: dynamic_2
+  endB:
+    attachID: fowt15
+    heading: 304.3
+    dynamicID: dynamic_2
+  type: stat_cab_300
+- name: array_cable65
+  endA:
+    attachID: fowt25
+    heading: 540.0020279796004
+    dynamicID: dynamic_1
+  endB:
+    attachID: fowt16
+    heading: 180.00202797960037
+    dynamicID: None
+  type: None
+- name: array_cable66
+  endA:
+    attachID: fowt15
+    heading: 410.00000000000006
+    dynamicID: dynamic_3
+  endB:
+    attachID: substation
+    heading: 19.999999999999964
+    dynamicID: dynamic_3
+  type: stat_cab_630
+
+
+dynamic_cable_configs:
+  dynamic_0:                    # Suspended dynamic cable configuration
+    cable_type: dyn_cab_630
+    A: 630
+    span: 1516.4
+    length: 1670.99
+    voltage: 66.0
+    sections:                   # appendages to cable in order from end A to end B
+    - type: cable_connector_630 # cable connector to platform A
+    - L_mid: 835.495            # buoyancy section
+      N_modules: 46.0
+      spacing: 17.76
+      V: 1
+      type: buoy_0
+    - type: cable_connector_630 # cable connector to platform B
+    rJTube: 5                   # radial distance of J-tube from center of platform
+  dynamic_1:
+    cable_type: dyn_cab_300
+    A: 300
+    span: 1516.4
+    length: 1851.33
+    voltage: 66.0
+    sections:
+    - type: cable_connector_300
+    - L_mid: 925.66
+      N_modules: 25.0
+      spacing: 33.18
+      V: 1
+      type: buoy_0
+    - type: cable_connector_300
+    rJTube: 5
+  dynamic_2:                     # lazy-wave cable configuration. 2 of these are used per "cable" when lazy-wave configs are added (one on each end with static cable in-between)
+    cable_type: dyn_cab_300
+    A: 300
+    span: 1000.0
+    length: 1511.71
+    voltage: 66.0
+    sections:
+    - type: cable_connector_300  # cable connector to platform
+    - L_mid: 716.87              # buoyancy section
+      N_modules: 29.0
+      spacing: 14.32
+      V: 1
+      type: buoy_0
+    - type: joint_0              # joint connecting to static cable section
+    rJTube: 5                    # radial distance to J-tube from platform center
+  dynamic_3:
+    cable_type: dyn_cab_630
+    A: 630
+    span: 1000.0
+    length: 1511.71
+    voltage: 66.0
+    sections:
+    - type: cable_connector_630
+    - L_mid: 716.87
+      N_modules: 52.0
+      spacing: 7.8
+      V: 1
+      type: buoy_0
+    - type: joint_0
+    rJTube: 5
+  dynamic_4:
+    cable_type: dyn_cab_1000
+    A: 1000
+    span: 1000.0
+    length: 1511.71
+    voltage: 66.0
+    sections:
+    - type: cable_connector_1000
+    - L_mid: 716.87
+      N_modules: 78.0
+      spacing: 5.21
+      V: 1
+      type: buoy_0
+    - type: joint_0
+    rJTube: 5
+  dynamic_5:
+    cable_type: dyn_cab_1000
+    A: 1000
+    span: 1516.4
+    length: 1703.7
+    voltage: 66.0
+    sections:
+    - type: cable_connector_1000
+    - L_mid: 851.85
+      N_modules: 70.0
+      spacing: 11.59
+      V: 1
+      type: buoy_0
+    - type: cable_connector_1000
+    rJTube: 5
+
+
+cable_types:
+  dyn_cab_630:
+    name: dynamic_cable_630mm
+    m: 55.76032503534361
+    EA: 658013418.058403
+    EI: 42465.860390790636
+    w: 279.6370013719994
+    MBL: 537453.5244977144
+    MBR: 2.759991035821002
+    A: 630.0
+    power: 125031558.62299062
+    resistance: 0.0380952380952381
+    voltage: 66.0
+    cost: 751.555
+    notes: made with getCableProps
+    d_vol: 0.1839994023880668
+  dyn_cab_300:
+    name: dynamic_cable_300mm
+    m: 36.66419531336287
+    EA: 469622033.24936056
+    EI: 19916.10897643939
+    w: 155.82772548702889
+    MBL: 383237.99297699344
+    MBR: 2.4099228634059946
+    A: 300.0
+    power: 84694364.82376207
+    resistance: 0.08
+    voltage: 66.0
+    cost: 492.66999999999996
+    notes: made with getCableProps
+    d_vol: 0.1606615242270663
+  stat_cab_300:
+    name: static_cable_300mm
+    d: 0.15396152422706633
+    m: 30.184309210840546
+    EA: 286833696.25348383
+    EI: 7679.657270398245
+    w: 108.90750709541506
+    MBL: 183724.16055912877
+    MBR: 2.309422863405995
+    A: 300
+    power: 84694364.82376207
+    resistance: 0.08
+    voltage: 66.0
+    cost: 455.27
+    notes: made with getCableProps
+  stat_cab_630:
+    name: static_cable_630mm
+    d: 0.1772994023880668
+    m: 45.32999798354779
+    EA: 417238593.86007315
+    EI: 17596.455171628895
+    w: 196.432684103527
+    MBL: 260460.0959348103
+    MBR: 2.6594910358210018
+    A: 630
+    power: 125031558.62299062
+    resistance: 0.0380952380952381
+    voltage: 66.0
+    cost: 692.54
+    notes: made with getCableProps
+  dyn_cab_1000:
+    name: dynamic_cable_1000mm
+    m: 75.7440231734922
+    EA: 854377279.9884987
+    EI: 68729.18743088475
+    w: 415.78113966445324
+    MBL: 698460.434218842
+    MBR: 3.0535249470757706
+    A: 1000.0
+    power: 159355059.41830036
+    resistance: 0.024
+    voltage: 66.0
+    cost: 1041.82
+    notes: made with getCableProps
+    d_vol: 0.20356832980505138
+  stat_cab_1000:
+    name: static_cable_1000mm
+    d: 0.19686832980505137
+    m: 60.876113832386956
+    EA: 551017280.6846389
+    EI: 29589.363667426773
+    w: 291.11501842638484
+    MBL: 342477.98651723727
+    MBR: 2.9530249470757703
+    A: 1000
+    power: 159355059.41830036
+    resistance: 0.024
+    voltage: 66.0
+    cost: 958.5699999999999
+    notes: made with getCableProps
+
+
+cable_appendages:
+  cable_connector_630:
+    type: cable_connector_630
+    cost: 136500
+  buoy_0:
+    type: buoy
+    d: 1.2
+    density: 480
+    l: 1.2
+    m: 480
+    volume: 1
+    w: -5346.45
+    cost: 13000
+  cable_connector_300:
+    type: cable_connector_300
+    cost: 101500
+  joint_0:
+    type: joint
+    cost: 118500
+    m: 0
+  cable_connector_1000:
+    type: cable_connector_1000
+    cost: 176000
