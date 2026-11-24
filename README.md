@@ -10,11 +10,12 @@ studies.
 Development of the ontology is currently in a feedback stage, where we seek
 input from industry, researchers, and other potential users. To review the 
 current plan for the ontology's scope, see the
-[Ontolgoy Summary document](https://github.com/IEAWindTask49/Ontology/blob/main/Ontology_Summary.docx).
+[Ontology Summary document](https://github.com/IEAWindTask49/Ontology/raw/refs/heads/main/Ontology_Summary.docx).
 
-Feedback is welcome, either through emailed comments to task49.wp2@gmail.com 
+Feedback is encouraged, either through emailed comments to task49.wp2@gmail.com 
 or through issue postings in the [Issues](https://github.com/IEAWindTask49/Ontology/issues) 
-tab.
+tab. Online workshops are also planned in early December, with more information
+available by email.
 
 > [!NOTE]
 > For those looking for the ontology description from Phase 1, see the
